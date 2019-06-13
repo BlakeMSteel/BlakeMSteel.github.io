@@ -11,7 +11,7 @@ Pirate.prototype.act = function() {
     var passableCallback = (x, y) => {
         return (x + "," + y in this.Game.map);
     }
-    var astar = new ROT.Path.AStar(x, y, passableCallback, {topology:8});
+    var astar = new ROT.Path.AStar(x, y, passableCallback, {topology:4});
 
     var path = [];
     var pathCallback = function(x, y) {
