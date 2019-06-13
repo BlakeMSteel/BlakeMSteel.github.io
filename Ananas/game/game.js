@@ -1,4 +1,5 @@
 import Player from './player.js';
+import Pirate from './pirate.js';
 
 var Game = {
     display: null,
@@ -7,55 +8,20 @@ var Game = {
         this.display = new ROT.Display();
         document.body.appendChild(this.display.getContainer());
         this._generateMap();
-        var scheduler = new ROT.Scheduler.Simple();
-        scheduler.add(this.player, true);
-        scheduler.add(this.pirate, true);
-        this.engine = new ROT.Engine(scheduler);
+        this.scheduler = new ROT.Scheduler.Simple();
+        this.scheduler.add(this.player, true);
+        for (var index in this.entities) {
+            this.scheduler.add(this.entities[index], true);
+        }
+        this.engine = new ROT.Engine(this.scheduler);
         this.engine.start();
     },
 }
 
-var Pirate = function(x, y, Game = null) {
-    this._x = x;
-    this._y = y;
-    this._draw();
-}
-
-Pirate.prototype.act = function() {
-    var x = Game.player.getX();
-    var y = Game.player.getY();
-    var passableCallback = function(x, y) {
-        return (x + "," + y in Game.map);
-    }
-    var astar = new ROT.Path.AStar(x, y, passableCallback, {topology:4});
-
-    var path = [];
-    var pathCallback = function(x, y) {
-        path.push([x, y]);
-    }
-    astar.compute(this._x, this._y, pathCallback);
-
-    path.shift(); // Remove current position
-    if (path.length == 1) {
-        Game.engine.lock();
-        alert("Game over - you were captured by the Pirate!");
-    } else {
-        x = path[0][0];
-        y = path[0][1];
-        Game.display.draw(this._x, this._y, Game.map[this._x + "," + this._y]);
-        this._x = x;
-        this._y = y;
-        this._draw();
-    }
-}
-
-Pirate.prototype._draw = function() {
-    Game.display.draw(this._x, this._y, "P", "red");
-}
-
 Game.map = {};
 Game.player = null;
-Game.pirate = null;
+Game.entities = new Array();
+Game.scheduler = null;
 Game.engine = null;
 Game.ananas = null;
 
@@ -76,7 +42,10 @@ Game._generateMap = function() {
 
     this._drawWholeMap();
     this.player = this._createBeing(Player, freeCells);
-    this.pirate = this._createBeing(Pirate, freeCells);
+    this.entities.push(this._createBeing(Pirate, freeCells));
+    this.entities.push(this._createBeing(Pirate, freeCells));
+    this.entities.push(this._createBeing(Pirate, freeCells));
+    this.entities.push(this._createBeing(Pirate, freeCells));
 }
 
 Game._drawWholeMap = function() {
@@ -107,6 +76,12 @@ Game._createBeing = function(what, freeCells) {
     var x = parseInt(parts[0]);
     var y = parseInt(parts[1]);
     return new what(x, y, this);
+}
+
+Game.removeBeing = function(entity) {
+    this.scheduler.remove(entity);
+    var index = this.entities.indexOf(entity);
+    this.entities.splice(index, 1);
 }
 
 Game.init();
