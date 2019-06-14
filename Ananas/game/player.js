@@ -1,3 +1,5 @@
+import { boxTile, wallTile  } from './settings.js';
+
 var Player = function(x, y, Game) {
     this._x = x;
     this._y = y;
@@ -29,6 +31,7 @@ Player.prototype.handleEvent = function(e) {
 
     if (code == 13 || code == 32) {
         this._checkBox();
+        this.Game.engine.unlock();
         return;
     }
 
@@ -41,7 +44,7 @@ Player.prototype.handleEvent = function(e) {
     var newY = this._y + diff[1];
 
     var newKey = newX + "," + newY;
-    if (!(newKey in this.Game.map)) {
+    if (this.Game.map[newKey] === wallTile) {
         return;
     }
 
@@ -55,7 +58,7 @@ Player.prototype.handleEvent = function(e) {
 
 Player.prototype._checkBox = function() {
     var key = this._x + "," + this._y;
-    if (this.Game.map[key] != "*") {
+    if (this.Game.map[key] != boxTile) {
         alert("There is no box here!");
     } else if (key == this.Game.ananas) {
         alert("Hooray! You found an ananas and won this game.");

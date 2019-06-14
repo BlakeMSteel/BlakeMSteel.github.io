@@ -1,3 +1,5 @@
+import { wallTile } from './settings.js';
+
 var Pirate = function(x, y, Game) {
     this._x = x;
     this._y = y;
@@ -9,7 +11,7 @@ Pirate.prototype.act = function() {
     var x = this.Game.player.getX();
     var y = this.Game.player.getY();
     var passableCallback = (x, y) => {
-        return (x + "," + y in this.Game.map);
+        return (this.Game.map[x + "," + y] !== wallTile);
     }
     var astar = new ROT.Path.AStar(x, y, passableCallback, {topology:4});
 
@@ -23,8 +25,8 @@ Pirate.prototype.act = function() {
     if (path.length == 0) {
         this.Game.removeBeing(this);
     } else if (path.length == 1) {
-        this.Game.engine.lock();
         alert("Game over - you were captured by the Pirate!");
+        this.Game.engine.lock();
     } else {
         x = path[0][0];
         y = path[0][1];
