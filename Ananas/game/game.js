@@ -1,5 +1,6 @@
 import Player from './player.js';
 import Pirate from './pirate.js';
+import Tile from './tile.js';
 import { boxColor, boxTile, displayHeight, displayWidth, floorTile, mapType, wallColor, wallTile } from './settings.js';
 
 var Game = {
@@ -98,10 +99,10 @@ Game._generateMap = function(type = mapType.ARENA) {
         var key = x + "," + y;
         if (value) {
             wallTiles.push(key);
-            this.map[key] = wallTile;
+            this.map[key] = new Tile(x, y, wallTile, wallColor, null, null, true, Game);
         } else {
             freeCells.push(key);
-            this.map[key] = floorTile;
+            this.map[key] = new Tile(x, y, null, null, null, null, false, Game);
         }
     }
 
@@ -125,15 +126,7 @@ Game._generateMap = function(type = mapType.ARENA) {
 
 Game._drawWholeMap = function() {
     for (var key in this.map) {
-        var parts = key.split(",");
-        var x = parseInt(parts[0]);
-        var y = parseInt(parts[1]);
-
-        var foregroundColor = wallColor;
-        if (this.map[key] === boxTile) {
-            foregroundColor = boxColor;
-        }
-        this.display.draw(x, y, this.map[key], foregroundColor);
+        this.map[key].draw();
     }
 }
 
@@ -141,7 +134,7 @@ Game._generateBoxes = function(freeCells) {
     for (var i = 0; i < 10; i++) {
         var index = Math.floor(ROT.RNG.getUniform() * freeCells.length);
         var key = freeCells.splice(index, 1)[0];
-        this.map[key] = boxTile;
+        this.map[key].setFloor(boxTile, boxColor);
         if (i === 0) {
             this.ananas = key;
         }
