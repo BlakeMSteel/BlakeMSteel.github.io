@@ -9,6 +9,7 @@ var Player = function(x, y, Game) {
 
 Player.prototype.act = function() {
     this.Game.engine.lock();
+    console.log(this.Game.engine);
     window.addEventListener("keydown", this);
 }
 
@@ -44,25 +45,26 @@ Player.prototype.handleEvent = function(e) {
     var newY = this._y + diff[1];
 
     var newKey = newX + "," + newY;
-    if (this.Game.map[newKey] === wallTile) {
+    if (this.Game.map[newKey].checkCollideable(wallTile)) {
         return;
     }
 
-    this.Game.display.draw(this._x, this._y, this.Game.map[this._x + "," + this._y]);
+    this.Game.map[this._x + "," + this._y].removeCollideable();
     this._x = newX;
     this._y = newY;
-    this._draw();
+    this.Game.map[this._x + "," + this._y].setCollideable("@", "#ff0", false);
     window.removeEventListener("keydown", this);
     this.Game.engine.unlock();
 }
 
 Player.prototype._checkBox = function() {
     var key = this._x + "," + this._y;
-    if (this.Game.map[key] != boxTile) {
+    if (!this.Game.map[key].checkFloor(boxTile)) {
         alert("There is no box here!");
     } else if (key == this.Game.ananas) {
         alert("Hooray! You found an ananas and won this game.");
     } else {
+        this.Game.map[key].removeFloor();
         alert("This box is empty :-(");
     }
 }

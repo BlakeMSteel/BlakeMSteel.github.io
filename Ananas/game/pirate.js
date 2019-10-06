@@ -11,7 +11,7 @@ Pirate.prototype.act = function() {
     var x = this.Game.player.getX();
     var y = this.Game.player.getY();
     var passableCallback = (x, y) => {
-        return (this.Game.map[x + "," + y] !== wallTile);
+        return !this.Game.map[x + "," + y].isImmoveable();
     }
     var astar = new ROT.Path.AStar(x, y, passableCallback, {topology:4});
 
@@ -25,15 +25,15 @@ Pirate.prototype.act = function() {
     if (path.length == 0) {
         this.Game.removeBeing(this);
     } else if (path.length == 1) {
-        alert("Game over - you were captured by the Pirate!");
+        alert("Game over - you were captured by a Pirate!");
         this.Game.engine.lock();
     } else {
         x = path[0][0];
         y = path[0][1];
-        this.Game.display.draw(this._x, this._y, this.Game.map[this._x + "," + this._y]);
+        this.Game.map[this._x + "," + this._y].removeCollideable();
         this._x = x;
         this._y = y;
-        this._draw();
+        this.Game.map[this._x + "," + this._y].setCollideable("P", "red", false);
     }
 }
 
