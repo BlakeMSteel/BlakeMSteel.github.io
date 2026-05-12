@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #70bc5e;
+  --color-dark: #222222;
+  --color-muted: #777777;
+  --font-montserrat: "Montserrat", sans-serif;
+  --font-roboto-slab: "Roboto Slab", serif;
+  --font-kaushan: "Kaushan Script", cursive;
+  --font-droid-serif: "Droid Serif", serif;
+}
+
+body {
+  font-family: "Roboto Slab", serif;
+  color: #777;
+}
+
+.nav-link-active {
+  color: #70bc5e !important;
+}
