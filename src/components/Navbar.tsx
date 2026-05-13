@@ -41,7 +41,7 @@ export default function Navbar() {
 
         {/* Desktop links */}
         <ul className="hidden md:flex gap-8 list-none m-0 p-0">
-          {(["skills", "contact"] as const).map((section) => (
+          {(["skills", "explore", "contact"] as const).map((section) => (
             <li key={section}>
               <Link to={section} {...sharedLinkProps} className={navLinkClass}>
                 {section.charAt(0).toUpperCase() + section.slice(1)}
@@ -67,7 +67,7 @@ export default function Navbar() {
         }`}
       >
         <ul className="list-none m-0 p-0 flex flex-col gap-4 pt-4">
-          {(["skills", "contact"] as const).map((section) => (
+          {(["skills", "explore", "contact"] as const).map((section) => (
             <li key={section}>
               <Link to={section} {...sharedLinkProps} className={navLinkClass}>
                 {section.charAt(0).toUpperCase() + section.slice(1)}

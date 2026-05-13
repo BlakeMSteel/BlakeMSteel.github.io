@@ -1,4 +1,5 @@
 import Contact from "./components/Contact";
+import Explore from "./components/Explore";
 import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import Navbar from "./components/Navbar";
@@ -10,6 +11,7 @@ function App() {
       <Navbar />
       <Hero />
       <Skills />
+      <Explore />
       <Contact />
       <Footer />
     </>
