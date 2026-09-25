@@ -1,4 +1,4 @@
-import { FaIdCard } from "react-icons/fa";
+import { FaIdCard, FaProjectDiagram } from "react-icons/fa";
 import type { IconType } from "react-icons";
 
 interface Site {
@@ -15,6 +15,13 @@ const sites: Site[] = [
     description:
       "Build and print custom stat cards for the Malifaux miniature wargame.",
     url: "https://blakesteel.com/malifaux-card-creator",
+  },
+  {
+    Icon: FaProjectDiagram,
+    title: "Malifaux Scheme Mapper",
+    description:
+      "Explore how GG1 general schemes chain together, and plot a path from any starting scheme to your target.",
+    url: "https://blakesteel.com/malifaux-scheme-mapper",
   },
 ];
 
